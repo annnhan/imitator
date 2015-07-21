@@ -9,7 +9,7 @@ var pg = require('../package.json');
 var comment = process.argv[2] || ('publish version@' + pg.version);
 
 var cp = child_process.exec(
-        'git commit -am "' + comment + '" && git push && cnpm publish',
+        'git commit -am "' + comment + '" && git push && npm publish',
         {cwd: path.resolve(__dirname, '..')});
 
 cp.stdout.on('data', function (data) {
