@@ -1,7 +1,5 @@
 module.exports = function(imitator) {
 
-    console.log('path of imitatorFile is', __filename);
-
     imitator.base('http://tuan.qunar.com');
 
     imitator('/json', {name: 'test'});

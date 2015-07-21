@@ -1,8 +1,7 @@
 /**
  * Created by an.han on 15/7/20.
  */
-var Promise = require('es6-promise').Promise;
-var URL = require('url');
+
 var util = require('./util');
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
