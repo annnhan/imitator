@@ -2,61 +2,109 @@
  * Created by an.han on 15/7/20.
  */
 var Promise = require('es6-promise').Promise;
+var URL = require('url');
 var util = require('./util');
-var http = require('http');
+var httpProxy = require('http-proxy');
+var proxy = httpProxy.createProxyServer();
 var app = global.app;
 
-function request(url, req, res) {
+// log proxy data
+proxy.on('open', function (proxySocket) {
+    proxySocket.on('data', function (chunk) {
+        console.log(chunk.toString());
+    });
+});
 
-}
-
-function imitator (url, result) {
-    var len = arguments.length
+// 根据参数个数获取配置
+function getOption(arg) {
+    var len = arg.length;
+    // 默认配置
+    var option = {
+        headers: {
+            'Cache-Control': 'no-cache'
+        },
+        statusCode: 200,
+        cookies: [],
+        timeout: 0
+    };
     if (len === 0) {
         return imitator;
     }
-    else if (len === 1){
-        if (util.isObject(url)) {
-            imitator.complex(url);
-        }
-        if (util.isArray(url)){
-            imitator.multiple(url);
+    else if (len === 1) {
+        var newOption = arg[0];
+        if (util.isObject(newOption)) {
+            util.each(newOption, function (value, key) {
+                if (key === 'headers') {
+                    util.each(newOption.headers, function (headervalue, headerkey) {
+                        option.headers[headerkey] = newOption.headers[headerkey];
+                    })
+                }
+                else {
+                    option[key] = newOption[key];
+                }
+            });
         }
     }
     else {
-        imitator.simple(url, result);
+        option.url = arg[0];
+        option.result = arg[1];
     }
-    return imitator;
+    return option;
 }
 
+function imitator() {
+    var option = getOption(arguments);
+
+    if (!option.url || !option.result) {
+        return;
+    }
+
+    app.use(option.url, function (req, res) {
+        setTimeout(function () {
+
+            // set header
+            res.set(option.headers);
+
+            // set Content-Type
+            option.type && res.type(option.type);
+
+            // set status code
+            res.status(option.statusCode);
+
+            // set cookie
+            util.each(option.cookies, function (item, index) {
+                var name = item.name;
+                var value = item.value;
+                delete item.name;
+                delete item.value;
+                res.cookie(name, value, item);
+            });
+
+            // do result
+            if (util.isFunction(option.result)) {
+                option.result(req, res);
+            }
+            else if (util.isArray(option.result) || util.isObject(option.result)) {
+                !option.type && res.type('json');
+                res.json(option.result);
+            }
+            else {
+                !option.type && res.type('text');
+                res.send(option.result.toString());
+            }
+
+        }, option.timeout);
+    });
+}
+
+// 规则之外的请求转发
 imitator.base = function (host) {
     process.nextTick(function () {
-        app.use(function (req, res, next) {
-            request(host.replace(/\/$/, '') + req.url, req, res);
+        app.use(function (req, res) {
+            proxy.web(req, res, {target: host});
         });
     });
 }
 
-imitator.rewrite = function (url, rewrite) {
-    app.use(url, function (req, res, next) {
-        var group = url.exec(req.url);
-        var requestUrl = rewrite.replace(/\$(\d+)/g, function ($0, d) {
-            return group[d];
-        });
-        request(requestUrl, req, res);
-    });
-}
-
-imitator.simple = function (url, result) {
-
-}
-
-imitator.complex = function (option) {
-
-}
-
-imitator.multiple = function (list) {
-
-}
 
 module.exports = imitator;

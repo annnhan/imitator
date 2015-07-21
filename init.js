@@ -53,7 +53,7 @@ var main = {
             console.warn('[WARN] imitator file not found!');
         }
         else {
-            require(imitatorFile)();
+            require(imitatorFile)(imitator);
         }
     },
 
@@ -69,7 +69,8 @@ var main = {
             app.use(function (err, req, res, next) {
                 res.json({
                     status: err.status || 500,
-                    message: err.message
+                    message: err.message,
+                    err: err
                 });
             });
         });

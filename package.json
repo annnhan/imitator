@@ -1,7 +1,7 @@
 {
   "name": "imitator",
   "author": "hanan",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A server that help you to imitate http response.",
   "repository": "https://github.com/hanan198501/imitator.git",
   "license": "ISC",
@@ -22,6 +22,7 @@
     "debug": "~2.2.0",
     "es6-promise": "^2.3.0",
     "express": "~4.13.1",
+    "http-proxy": "^1.11.1",
     "jade": "~1.11.0",
     "morgan": "~1.6.1",
     "optimist": "^0.6.1",

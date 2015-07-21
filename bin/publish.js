@@ -4,8 +4,9 @@
 
 var child_process = require('child_process');
 var path = require('path');
+var pg = require('../package.json');
 
-var comment = process.argv[2];
+var comment = process.argv[2] || ('publish version@' + pg.version);
 
 var cp = child_process.exec(
         'git commit -am "' + comment + '" && git push && cnpm publish',
