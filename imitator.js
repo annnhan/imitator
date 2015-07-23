@@ -2,6 +2,9 @@
  * Created by an.han on 15/7/20.
  */
 
+var express = require('express');
+var fs = require('fs');
+var path = require('path');
 var util = require('./util');
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
@@ -51,6 +54,15 @@ function getOption(arg) {
     return option;
 }
 
+// 把基于 Imitatorfile 的相对绝对转成绝对路径
+function parsePath(value) {
+    return path.resolve(global.imitatorFilePath, value);
+}
+
+
+/**
+ * 数据模拟函数
+ */
 function imitator() {
     var option = getOption(arguments);
 
@@ -105,5 +117,14 @@ imitator.base = function (host) {
     });
 }
 
+// 读取文件内容
+imitator.file = function (file) {
+    return fs.readFileSync(parsePath(file));
+}
+
+// 设置静态文件路径
+imitator.static = function (dir) {
+    app.use(express.static(parsePath(dir)));
+}
 
 module.exports = imitator;

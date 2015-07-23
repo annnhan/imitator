@@ -2,8 +2,12 @@
   "name": "imitator",
   "author": "hanan",
   "version": "0.0.1",
+  "bin": "bin/www",
   "description": "A server that help you to imitate http response.",
-  "repository": "https://github.com/hanan198501/imitator.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hanan198501/imitator.git"
+  },
   "license": "ISC",
   "scripts": {
     "start": "node ./bin/www"
@@ -26,5 +30,9 @@
     "morgan": "~1.6.1",
     "optimist": "^0.6.1",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "expect.js": "*"
   }
+
 }

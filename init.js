@@ -26,7 +26,7 @@ var main = {
     customRoute: function () {
         var argv = this.argv;
         var home = process.env[process.platform === 'win32' ? 'USERPROFILE' : 'HOME'];
-        var defautImitatorFile = path.resolve(home, '.imitatorFile.js');
+        var defautImitatorFile = path.resolve(home, 'Imitatorfile.js');
         var imitatorFile;
 
         if (argv.f) {
@@ -53,13 +53,13 @@ var main = {
             console.warn('[WARN] imitator file not found!');
         }
         else {
+            global.imitatorFilePath = path.resolve(imitatorFile, '..');
             require(imitatorFile)(imitator);
         }
     },
 
     defaultRoute: function () {
         var app = this.app;
-
         setTimeout(function () {
             app.use(function (req, res, next) {
                 var err = new Error('Not Found');

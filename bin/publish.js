@@ -1,12 +1,10 @@
-/**
- * Created by an.han on 15/7/19.
- */
+#!/usr/bin/env node
 
 var child_process = require('child_process');
 var path = require('path');
 var pg = require('../package.json');
 
-var comment = process.argv[2] || ('publish version@' + pg.version);
+var comment = process.argv[2] || ('commit version@' + pg.version);
 
 var cp = child_process.exec(
         'git commit -am "' + comment + '" && git push && npm publish',
