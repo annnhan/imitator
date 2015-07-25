@@ -1,7 +1,7 @@
 /**
  * Created by an.han on 15/7/20.
  */
-var Promise = require('es6-promise').Promise;
+//var Promise = require('es6-promise').Promise;
 var imitator = require('./imitator');
 var path = require('path');
 var fs = require('fs');
@@ -19,7 +19,6 @@ var main = {
     },
 
     extend: function () {
-        this.imitator.Promise = Promise;
         this.imitator.server = app;
     },
 
