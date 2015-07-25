@@ -16,6 +16,10 @@ proxy.on('open', function (proxySocket) {
         console.log(chunk.toString());
     });
 });
+proxy.on('proxyRes', function (proxyRes, req, res) {
+    console.log('RAW Response from the target', JSON.stringify(proxyRes.headers, true, 2));
+});
+
 
 // 根据参数个数获取配置
 function getOption(arg) {
@@ -123,8 +127,8 @@ imitator.file = function (file) {
 }
 
 // 设置静态文件路径
-imitator.static = function (dir) {
-    app.use(express.static(parsePath(dir)));
+imitator.static = function (url, dir) {
+    app.use(url, express.static(parsePath(dir)));
 }
 
 module.exports = imitator;
