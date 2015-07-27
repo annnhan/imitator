@@ -6,11 +6,10 @@ imitator
 
 ## 为什么会有 imitator？
 
-前后端开发协作的过程中，为了不依赖于后端环境，我们常常会和后段童鞋定好接口，然后采用前后端分离的开发模式。
-但是这样的模式，需要前端自己来实现接口数据的模拟。通常，使用 nginx 可以满足我们绝大部分场景的需求了。
+前后端开发协作的过程中，为了不依赖于后端环境，我们常常会和后端童鞋定好接口，然后采用前后端分离的开发模式。
+但是这样的模式，需要前端自己来实现接口数据的模拟。通常使用 nginx 可以满足我们绝大部分场景的需求了。
 但是，nginx 的配置文件相对前端同学来说还是不够友好，而且有些个性的接口格式无法满足。
-imitator 使用 nodejs 并基于 express.js 实现， 配置文件相当简单， 而且易于订制。
-实在是前后分离，接口模拟之良药啊~~~
+imitator 使用 nodejs 并基于 express.js 实现， 配置文件相当简单， 而且易于订制，前端同学使用起来非常顺手。
 
 ## 快速上手
 
@@ -48,7 +47,7 @@ imitator 命令接受2参数：
     
 ## 配置文件
 
-imitator 的配置文件是一个 尊选commonJs 规范的 nodejs 模块， module.exports 是一个函数，接受一个参数：imitator 。 通过调用 imitator(option) 来设置一条规则。
+imitator 的配置文件是其实就是一个 nodejs 模块， module.exports 是一个函数，接受一个参数：imitator 。 通过调用 imitator(option) 来设置一条规则。
 其中 option 是规则的参数对象。如：
 
     module.exports = function(imitator) {
@@ -69,7 +68,7 @@ imitator 的配置文件是一个 尊选commonJs 规范的 nodejs 模块， modu
 
 ## 规则参数（option）
 
-我们真的再配置文件中可以通过 imitator(option) 来制定一条规则，其中参数对象包含以下属性：
+配置文件中可以通过 imitator(option) 来制定一条规则，其中参数对象包含以下属性：
 
 ### option.url
 
@@ -83,7 +82,7 @@ imitator 的配置文件是一个 尊选commonJs 规范的 nodejs 模块， modu
         });
         
         imitator({
-            url: /\/[\d]/,  // 支持正则
+            url: /\/\d{1,3}/,  // 支持正则
             ……
         });
     }
@@ -139,7 +138,7 @@ imitator 的配置文件是一个 尊选commonJs 规范的 nodejs 模块， modu
 
 ### option.headers
 
-设置设置返回内容的 HTTP header。如：
+设置 HTTP header。如：
 
     module.exports = function(imitator) {
             
@@ -155,7 +154,7 @@ imitator 的配置文件是一个 尊选commonJs 规范的 nodejs 模块， modu
 
 ### option.cookies
 
-设置cookie，如：
+设置 cookie，如：
 
     module.exports = function(imitator) {
                 
@@ -171,7 +170,7 @@ imitator 的配置文件是一个 尊选commonJs 规范的 nodejs 模块， modu
 
 ### option.timeout
    
-设置请求响应的延时cookie，单位为毫秒，如：
+设置请求响应的延时时间，单位为毫秒，如：
  
      module.exports = function(imitator) {
                  

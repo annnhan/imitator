@@ -1,7 +1,7 @@
 {
   "name": "imitator",
   "author": "hanan",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "bin": "bin/www",
   "description": "A server that help you to imitate http response.",
   "repository": {
