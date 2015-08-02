@@ -205,7 +205,7 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
 
     module.exports = function(imitator) {
           
-         imitator.static('static', './public');
+         imitator.static('/static', './public');
     }
 
 ### 读取文件内容
