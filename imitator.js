@@ -131,4 +131,10 @@ imitator.static = function (url, dir) {
     app.use(url, express.static(parsePath(dir)));
 }
 
+imitator.jsonp = function (context, callbackName) {
+    callbackName = callbackName || 'callback';
+    context = typeof context === 'string' ? context : JSON.stringify(context);
+    return callbackName + '(' + context + ')';
+};
+
 module.exports = imitator;

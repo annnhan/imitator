@@ -217,6 +217,20 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
         // 当请求匹配到 /file 时 ，返回文件 ./myfile.txt 的内容
         imitator('/file', imitator.file('./myfile.txt'));
     }
+
+### 返回jsonp内容
+
+通过 imitator.jsonp(context， callbackName) 可以设置返回 jsonp 内容，其中 context 是内容实体，类型为 object|string， callbackName 为回调函数名称， 默认为 'callback'。如：
+
+    module.exports = function(imitator) {
+
+            // 当请求匹配到 /myjsonp 时，将文件文件 ./myfile.txt 的内容经过 jsonp 包裹后返回
+            imitator('/myjsonp', imitator.jsonp(imitator.file('./myfile.txt')));
+
+            // 当请求匹配到 /myjsonp2 时，将一个对象用 'mycb' 这个回调函数名经过 jsonp 包裹后返回，
+            imitator('/myjsonp', imitator.jsonp({url: 'annn.me'}, 'mycb'));
+        }
+
     
 ### 配置文件(Imitatorfile.js)参考
 
