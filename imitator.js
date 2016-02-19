@@ -74,7 +74,10 @@ function imitator() {
         return;
     }
 
-    app.use(option.url, function (req, res) {
+    // option.action is one of ['get','post','delete','put'...]
+    var action = option.action || 'use';
+
+    app[action](option.url, function (req, res) {
         setTimeout(function () {
 
             // set header
