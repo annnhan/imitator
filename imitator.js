@@ -74,7 +74,10 @@ function imitator() {
         return;
     }
 
-    app.use(option.url, function (req, res) {
+    // option.action is one of ['get','post','delete','put'...]
+    var action = option.action || 'use';
+
+    app[action](option.url, function (req, res) {
         setTimeout(function () {
 
             // set header
@@ -130,5 +133,11 @@ imitator.file = function (file) {
 imitator.static = function (url, dir) {
     app.use(url, express.static(parsePath(dir)));
 }
+
+imitator.jsonp = function (context, callbackName) {
+    callbackName = callbackName || 'callback';
+    context = typeof context === 'string' ? context : JSON.stringify(context);
+    return callbackName + '(' + context + ')';
+};
 
 module.exports = imitator;
