@@ -16,22 +16,22 @@ imitator 使用 nodejs 并基于 express.js 实现， 配置文件相当简单�
 1. 安装——首先你要先安装 nodejs 和 npm， 然后全局安装imitator。
 
         npm install imitator -g
-    
+
 2. 编写配置文件——在你的用户目录(比如我的是/User/hanan)下新建一个名为 Imitatorfile.js 的文件（这是 imitator 的默认配置文件）， 内容如下。
-    
+
         module.exports = function(imitator) {
             // 返回一个json
             imitator('/json', {name: 'hello world'});
         }
-    
+
 3. 启动服务——命令行输入以下命令，启动 imitator server.
 
         imitator
-    
+
 4. 浏览器访问 127.0.0.1:8888/json ， 将会看到：
 
         {"name":"hello world"}
-    
+
 
 ### 命令行参数
 
@@ -42,9 +42,9 @@ imitator 命令接受2参数：
 -f 设置配置文件的路径，支持相对路径和绝对路径，默认为：用户目录/Imitatorfile.js 。
 
 下面的命令将使用 9000 端口， /home/myconfig.js 这个文件作为配置文件来启动 imitator server 。
-    
+
     imitator -p 9000 -f /home/myconfig.js
-    
+
 ### 配置文件
 
 imitator 的配置文件是其实就是一个 nodejs 模块， module.exports 是一个函数，接受一个参数：imitator 。 通过调用 imitator(option) 来设置一条规则。
@@ -56,14 +56,14 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
             result: {name: 'json test'} // 返回的内容
         });
     }
-    
+
 如上，当请求地址匹配到 /json 这个路径的时候，就会返回 {name: 'json test'} 的json字符串。
 
 当 option 中只包含 url，result 两个参数时，可以简写成 imitator(url, result) 的形式，上面的例子可以写成：
 
     module.exports = function(imitator) {
         imitator('/json', {name: 'json test'});
-    }    
+    }
 
 
 ### 规则参数（option）
@@ -75,12 +75,12 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
 必填，设置请求的匹配模式，支持正则。如：
 
     module.exports = function(imitator) {
-    
+
         imitator({
             url: '/json',
             ……
         });
-        
+
         imitator({
             url: /\/\d{1,3}/,  // 支持正则
             ……
@@ -92,17 +92,17 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
 必填，设置请求的返回内容，如果是一个 object 或者 array，将会被 JSON.stringify 后返回；如果是一个 function，将会接受 req 和 res 两个参数执行，可用于实现一些个性化的返回内容。如：
 
     module.exports = function(imitator) {
-    
+
         imitator({
             ……
             result: 'my result',  //普通字符串
         });
-        
+
         imitator({
             ……
             result: {name: 'json test'}, //json
         });
-        
+
         imitator({
             ……
             result: function (req, res) {  // 自定义内容
@@ -121,27 +121,27 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
 设置通过 <a href="https://github.com/broofa/node-mime?_ga=1.127462925.164520609.1437794879#mimelookuppath" target="_blank">mime.lookup()</a> 转化的 Content-Type HTTP header。如：
 
     module.exports = function(imitator) {
-        
+
         imitator({
             ……
             type: 'json',  ==> 'application/json'
             ……
         });
-        
+
         imitator({
             ……
             type: 'html',  ==> 'text/html'
             ……
         });
-        
-    }    
+
+    }
 
 #### option.headers
 
 设置 HTTP header。如：
 
     module.exports = function(imitator) {
-            
+
         imitator({
             ……
             headers: {
@@ -149,15 +149,15 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
             }
             ……
         });
-        
-    }     
+
+    }
 
 #### option.cookies
 
 设置 cookie，如：
 
     module.exports = function(imitator) {
-                
+
         imitator({
             ……
             cookies: [
@@ -165,35 +165,49 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
             ]
             ……
         });
-        
+
     }
 
 #### option.timeout
-   
+
 设置请求响应的延时时间，单位为毫秒，如：
- 
+
      module.exports = function(imitator) {
-                 
+
          imitator({
              ……
              timeout: 1000
              ……
          });
-         
+
      }
-     
+
+#### option.action
+
+设置请求的接受类型 (GET, POST, PATCH, DELETE...)，如：
+
+     module.exports = function(imitator) {
+
+         imitator({
+             ……
+             action: 'GET'
+             ……
+         });
+
+     }
+
 ### HTTP代理
 
 通过 imitator.base() 可以将规则之外的请求，转发到其他的服务器上。这样可以在实现接口模拟的同时，使用其他服务器的返回内容。如：
 
     module.exports = function(imitator) {
-          
+
          // 这里是各种规则========
          imitator(……);
          imitator(……);
          imitator(……);
-         
-         
+
+
          // 没有命中规则的请求, 转发到192.168.8.8:9000下
          imitator.base('http://192.168.8.8:9000');
     }
@@ -204,16 +218,16 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
 通过 imitator.static(url, path) 可以设置静态文件目录。 url 为匹配的请求地址，支持正则；path 为静态文件的目录，路径相对于配置文件。如：
 
     module.exports = function(imitator) {
-          
+
          imitator.static('/static', './public');
     }
 
 ### 读取文件内容
 
 通过 imitator.file(filePath) 可以读取文件内容，filePath是文件路径，相对于配置文件。如：
-    
+
     module.exports = function(imitator) {
-              
+
         // 当请求匹配到 /file 时 ，返回文件 ./myfile.txt 的内容
         imitator('/file', imitator.file('./myfile.txt'));
     }
@@ -231,7 +245,7 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
             imitator('/myjsonp', imitator.jsonp({url: 'annn.me'}, 'mycb'));
         }
 
-    
+
 ### 配置文件(Imitatorfile.js)参考
 
 详见：[https://github.com/hanan198501/imitator/blob/master/test/Imitatorfile.js](https://github.com/hanan198501/imitator/blob/master/test/Imitatorfile.js)
