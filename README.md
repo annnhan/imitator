@@ -106,7 +106,7 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
         imitator({
             ……
             result: function (req, res) {  // 自定义内容
-                if (req.param.name === 'hanan') {
+                if (req.param('name') === 'hanan') {
                     res.send('中年痴呆症患者');
                 }
                 else {
