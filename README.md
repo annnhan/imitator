@@ -249,3 +249,8 @@ imitator 的配置文件是其实就是一个 nodejs 模块， module.exports �
 ### 配置文件(Imitatorfile.js)参考
 
 详见：[https://github.com/hanan198501/imitator/blob/master/test/Imitatorfile.js](https://github.com/hanan198501/imitator/blob/master/test/Imitatorfile.js)
+
+
+### LICENSE
+
+[MIT](https://opensource.org/licenses/MIT)
