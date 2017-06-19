@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env nodemon
 
 var http = require('http');
 var optimist = require('optimist');
