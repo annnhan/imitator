@@ -1,0 +1,10 @@
+.DS_Store
+node_modules/
+dist/
+mock/static/
+webpack.config.js
+webpack.production.config.js
+webpack.test.config.js
+npm-debug.log*
+
+**/*.swp
